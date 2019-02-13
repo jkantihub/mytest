@@ -1,5 +1,5 @@
 <?php
-print("Hello World");
+print("Hello World!  ");
 
 echo '<time datetime="'.date('c').'">'.date('Y - m - d').'</time>';
 ?>
