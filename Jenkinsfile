@@ -10,6 +10,7 @@ pipeline {
     stage('Stage2') {
       steps {
         echo 'Hello from Agent'
+        echo 'Hello print'
       }
     }
 
