@@ -1,18 +1,23 @@
-pipeline {
-  agent any
-  stages {
-    stage('Stage1') {
-      steps {
-        sh 'echo "Hello World"'
+
+podTemplate(yaml: """
+kind: Pod
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug-539ddefcae3fd6b411a95982a830d987f4214251
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+"""
+  ) {
+
+  node(POD_LABEL) {
+    stage('Build with Kaniko') {
+      git 'https://github.com/jenkinsci/docker-jnlp-slave.git'
+      container('kaniko') {
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --no-push'
       }
     }
-
-    stage('Stage2') {
-      steps {
-        echo 'Hello from Agent'
-        echo 'Hello print'
-      }
-    }
-
   }
 }
